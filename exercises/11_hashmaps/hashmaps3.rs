@@ -31,6 +31,52 @@ fn build_scores_table(results: &str) -> HashMap<&str, TeamScores> {
         // Keep in mind that goals scored by team 1 will be the number of goals
         // conceded by team 2. Similarly, goals scored by team 2 will be the
         // number of goals conceded by team 1.
+
+        // Insert the default with zeros if a team doesn't exist yet.
+        let team_1 = scores.entry(team_1_name).or_default();
+        // Update the values.
+        team_1.goals_scored += team_1_score;
+        team_1.goals_conceded += team_2_score;
+
+        // Similarly for the second team.
+        let team_2 = scores.entry(team_2_name).or_default();
+        team_2.goals_scored += team_2_score;
+        team_2.goals_conceded += team_1_score;
+
+        // This works, but is far more verbose than it needs to be
+        // if scores.contains_key(team_1_name) {
+        //     let cur_scores = scores.get(team_1_name).unwrap();
+        //     let new_scores = TeamScores {
+        //         goals_scored: cur_scores.goals_scored + team_1_score,
+        //         goals_conceded: cur_scores.goals_conceded + team_2_score,
+        //     };
+        //     scores.insert(team_1_name, new_scores);
+        // } else {
+        //     scores.insert(
+        //         team_1_name,
+        //         TeamScores {
+        //             goals_scored: team_1_score,
+        //             goals_conceded: team_2_score,
+        //         },
+        //     );
+        // }
+
+        // if scores.contains_key(team_2_name) {
+        //     let cur_scores = scores.get(team_2_name).unwrap();
+        //     let new_scores = TeamScores {
+        //         goals_scored: cur_scores.goals_scored + team_2_score,
+        //         goals_conceded: cur_scores.goals_conceded + team_1_score,
+        //     };
+        //     scores.insert(team_2_name, new_scores);
+        // } else {
+        //     scores.insert(
+        //         team_2_name,
+        //         TeamScores {
+        //             goals_scored: team_2_score,
+        //             goals_conceded: team_1_score,
+        //         },
+        //     );
+        // }
     }
 
     scores
