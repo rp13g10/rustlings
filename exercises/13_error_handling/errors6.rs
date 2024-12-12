@@ -46,7 +46,16 @@ impl PositiveNonzeroInteger {
     fn parse(s: &str) -> Result<Self, ParsePosNonzeroError> {
         // TODO: change this to return an appropriate error instead of panicking
         // when `parse()` returns an error.
-        let x: i64 = s.parse().unwrap();
+        // let x: i64 = s.parse().unwrap();
+        // Self::new(x).map_err(ParsePosNonzeroError::from_creation)
+
+        // Attempt to parse the input into a number (note that s.parse does not call this method!)
+        // If this returns an error, wrap it in the custom error type & return that
+        // (note the ? which will return early if an error is encountered)
+        let x: i64 = s.parse().map_err(ParsePosNonzeroError::from_parse_int)?;
+
+        // Attempt to create a new instance with the parsed value, wrapping the error in the
+        // custom type if required
         Self::new(x).map_err(ParsePosNonzeroError::from_creation)
     }
 }
